@@ -16,16 +16,20 @@ struct CharactersResponse: Codable, Sendable {
 struct Character: Codable, Identifiable, Sendable {
   let id: Int
   let name: String
-  let status: String
+  let status: String?
   let species: String
   let image: String
   
   var statusEmoji: String {
-    switch status.lowercased() {
+    switch status?.lowercased() {
       case "alive":
       return "❤️"
     case "dead":
       return "☠️"
+    case "unknown":
+      return "🤷‍♂️"
+    case .none:
+      return "🤯"
     default:
       return "🤨"
     }
