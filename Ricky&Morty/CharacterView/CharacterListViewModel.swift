@@ -15,8 +15,6 @@ class CharacterListViewModel: ObservableObject {
     
     // MARK: - Published Properties
     @Published var characters: [Character] = []
-  var name: String = ""
-  var age: Int = 18
     
     // MARK: - Init
     init() {
@@ -37,7 +35,7 @@ class CharacterListViewModel: ObservableObject {
               let (data, _): (Data, URLResponse) = try await URLSession.shared.data(from: url) // variable para el tipo de data
                 
                 // 2. Decodificamos el JSON de forma segura
-                let decoder: JSONDecoder = JSONDecoder() // hacer mas explicita 
+                let decoder: JSONDecoder = JSONDecoder() // hacer mas explicita
                 let decodedResponse = try decoder.decode(CharactersResponse.self, from: data)
                 
                 self.characters = decodedResponse.results
