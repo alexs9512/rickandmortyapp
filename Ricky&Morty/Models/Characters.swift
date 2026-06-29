@@ -32,7 +32,16 @@ struct Character: Codable, Identifiable, Sendable {
       return "🤯"
     default:
       return "🤨"
+      }
     }
   }
-}
 
+extension Character {
+  static let previewSample =  Character (
+    id: 1,
+    name: "Rick Sanchez",
+    status: "Alive",
+    species: "Human",
+    image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+  )
+}

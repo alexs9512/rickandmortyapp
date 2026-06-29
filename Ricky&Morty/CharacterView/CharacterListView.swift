@@ -22,21 +22,26 @@ struct CharacterListView: View {
   
   // MARK: - Body
   var body: some View {
-    ZStack {
-      backgroundImage
-      
-      VStack(alignment: .leading, spacing: 0.0) {
-        Text(CharacterViewTexts.mainTitle)
-          .font(.largeTitle)
-          .foregroundColor(.portalGreen)
-          .bold()
-          .padding(.horizontal,20.0)
-          .padding(.top, 40.0)
+    NavigationStack {
+      ZStack {
+        backgroundImage
         
-        
-        List(viewModel.characters) { character in characterRow(for: character)
+        VStack(alignment: .leading, spacing: 0.0) {
+          Text(CharacterViewTexts.mainTitle)
+            .font(.largeTitle)
+            .foregroundColor(.portalGreen)
+            .bold()
+            .padding(.horizontal,20.0)
+            .padding(.top, 40.0)
+          
+          
+          List(viewModel.characters) { character in characterRow(for: character)
+            NavigationLink(destination: characterDetailsView(character: character)) {
+              
+            }
+          }
+          .scrollContentBackground(.hidden)
         }
-        .scrollContentBackground(.hidden)
       }
     }
   }

@@ -23,7 +23,7 @@ class CharacterListViewModel: ObservableObject {
     
     // MARK: - API Networking
     func fetchCharacters() {
-      guard let url: URL = URL(string: "https://rickandmortyapi.com/api/character") else { // hacerla explicita
+      guard let url: URL = URL(string: "https://rickandmortyapi.com/api/character") else {
             print("URL inválida") // quitar print
             return
         }
@@ -32,17 +32,17 @@ class CharacterListViewModel: ObservableObject {
         Task {
             do {
                 // 1. Descargamos los datos de forma asíncrona
-              let (data, _): (Data, URLResponse) = try await URLSession.shared.data(from: url) // variable para el tipo de data
+              let (data, _): (Data, URLResponse) = try await URLSession.shared.data(from: url)
                 
                 // 2. Decodificamos el JSON de forma segura
-                let decoder: JSONDecoder = JSONDecoder() // hacer mas explicita
+                let decoder: JSONDecoder = JSONDecoder()
                 let decodedResponse = try decoder.decode(CharactersResponse.self, from: data)
                 
                 self.characters = decodedResponse.results
-                print("¡API Exitosa! Se cargaron \(decodedResponse.results.count) personajes.")
+                print("¡API Exitosa! Se cargaron \(decodedResponse.results.count) personajes.") // una imagen de rick o morty celebrando
                 
             } catch {
-                print("Error en la API o Decodificación: \(error)")
+                print("Error en la API o Decodificación: \(error)") // cambiar por el rick borracho y poner el boton de reintentar y hacer otra vez el refresh
             }
         }
     }
