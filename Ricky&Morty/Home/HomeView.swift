@@ -91,13 +91,14 @@ struct HomeView: View {
     func showCorrespondingView() -> some View {
       switch viewModel.currentStatus {
         
-      case .start:    mainView
-        
-      case .charging: LoadView()
-        
-      case .list:     CharacterListView()
-        
-      case .error:    CrashView()
+      case .start:
+        mainView
+      case .charging:
+        LoadView()
+      case .list:
+        CharacterListView()
+      case .error:
+        CrashView()
       }
     }
   }
