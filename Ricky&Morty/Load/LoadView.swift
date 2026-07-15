@@ -12,11 +12,8 @@ struct LoadView: View {
   private let paddingValue: CGFloat = 40.0
   private let imagedLoadView: String = "imageLoadView"
   
-  // MARK: - State Properties
-  @State private var fraseActual: String = "Cargandoo.."
-  
   // MARK: - Observed Objects
-  @ObservedObject var viewModel: HomeViewModel
+  @ObservedObject private var viewModel = LoadViewModel()
 
   // MARK: - Body
     var body: some View {
@@ -31,7 +28,7 @@ struct LoadView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
       }
       .onAppear {
-        fraseActual = viewModel.obtenerFrasesAleatorias()
+        viewModel.loadNewPhrase()
       }
     }
   // MARK: - Complementary View
@@ -44,8 +41,9 @@ struct LoadView: View {
     }
     .ignoresSafeArea()
   }
+  
   var textFraseActual: some View {
-    Text(fraseActual)
+    Text(viewModel.phrasesInScreen)
       .rickTextStyle()
       .padding(paddingValue)
     }
@@ -54,5 +52,5 @@ struct LoadView: View {
 
 // MARK: - Preview
 #Preview {
-  LoadView(viewModel: HomeViewModel())
+  LoadView()
 }

@@ -9,47 +9,87 @@ import SwiftUI
 
 struct characterDetailsView: View {
   
+@StateObject private var detailViewModel = CharacterDetailsViewModel()
+  
   // MARK: - Constants
-  private let imageCharacterDetails: String = "imageCharacterDetailsView"
- // MARK: - llamadas.
+  private let vStackSpacing: CGFloat = 20.0
+  private let titleTextNamePadding: CGFloat = 10.0
+  private let characterImageFrameWidth: CGFloat = 280.0
+  private let characterDetailsImage: String = "imageDefault"
+  
+  // MARK: - llamadas.
   let character: Character
   
- // MARK: - Body
-    var body: some View {
-      ZStack {
-        backgroundImage
-        VStack(spacing: 20) {
-          AsyncImage(url: URL(string: character.image)) { phase in
-            if let image = phase.image {
-              image
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 250, height: 250)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-              Spacer()
-            } else {
-              ProgressView()
-            }
-          }
-          Text(character.name)
-            .font(.title)
-            .foregroundColor(.portalGreen)
+  // MARK: - Body
+  var body: some View {
+    Group {
+      if detailViewModel.isTimeDone {
+        
+        ZStack {
+            imagebackGround
+      
+        ScrollView {
+          VStack(spacing: vStackSpacing) {
+            titleTextName
+          Spacer()
             
-          Text("Estado: \(character.status)")
-            .foregroundColor(.portalGreen)
-          Text("Especie: \(character.species)")
-            .foregroundColor(.portalGreen)
+            characterImage
+            
+            titleTextId
+            
+          HStack {
+              titlTextStatus
+              titleTextSpecies
         }
       }
     }
-  
-// MARK: - Complementary View
-  var backgroundImage: some View {
-    Image(imageCharacterDetails)
-      .ImageStyle()
+  }
+      } else  {
+        LoadView()
+          .onAppear {
+            detailViewModel.startDetailsTimer()
+        }
+      }
     }
-}
+  }
+  
+  // MARK: - Complementary View
+  var titleTextName: some View {
+    Text("\(character.name)")
+      .font(.largeTitle)
+      .characterDetailsTextStyle()
+      .padding(.top, titleTextNamePadding)
+  }
+  
+  var titleTextId: some View {
+    Text("ID: \n \(character.idEmoji)")
+      .characterDetailsTextStyle()
+  }
+  
+  var titlTextStatus: some View {
+    Text("Status: \n \(character.statusEmoji)")
+      .characterDetailsTextStyle()
+  }
+  
+  var titleTextSpecies: some View {
+    Text("Species: \n \(character.speciesEmoji)")
+      .characterDetailsTextStyle()
+  }
+  
+  var imagebackGround: some View {
+    Image(characterDetailsImage)
+      .ImageStyle()
+  }
+  
+  var characterImage: some View {
+    CustomAsyncImage(urlString: character.image)
+      .aspectRatio(contentMode: .fit)
+      .frame(width: 280, height: 280)
+      .clipShape(RoundedRectangle(cornerRadius: 50))
 
+  }
+}
+  
 #Preview {
   characterDetailsView(character: .previewSample)
 }

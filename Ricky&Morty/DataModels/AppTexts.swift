@@ -26,3 +26,14 @@ struct LoadViewTexts {
 struct CharacterViewTexts {
   static let mainTitle = "Personajes"
 }
+
+// MARK: - CharacterDetailsView
+enum characterDetailsViewTexts {
+  static let mainTitle = "Status: \n "
+}
+
+// MARK: - CrashView
+enum CrashViewTexts {
+  static let mainTitle = "¡A La mierda el sistema!"
+  static let subTitle = "¡ NO hay internet! "
+}

@@ -15,6 +15,8 @@ struct CharacterListView: View {
   private let cornerRadius: CGFloat = 8.0
   private let vstackSpacing: CGFloat = 4.0
   private let listOpacity: CGFloat = 0.4
+  private let paddingHorizontal: CGFloat = 20.0
+  private let paddingTop: CGFloat = 40.0
   private let imageCharacterView: Image = Image("imageCharacterListView")
   
   // MARK: - Observed Objects
@@ -26,41 +28,38 @@ struct CharacterListView: View {
       ZStack {
         backgroundImage
         
-        VStack(alignment: .leading, spacing: 0.0) {
-          Text(CharacterViewTexts.mainTitle)
-            .font(.largeTitle)
-            .foregroundColor(.portalGreen)
-            .bold()
-            .padding(.horizontal,20.0)
-            .padding(.top, 40.0)
-          
+        VStack(alignment: .leading) {
+          characterTextTitle
           
           List(viewModel.characters) { character in characterRow(for: character)
-            NavigationLink(destination: characterDetailsView(character: character)) {
-              
+              .background(
+            NavigationLink(destination: Ricky_Morty.characterDetailsView(character: character)) {
+              EmptyView()
             }
+              .opacity(.zero)
+            )
           }
           .scrollContentBackground(.hidden)
         }
       }
     }
+    .onAppear {
+      viewModel.fetchCharacters()
+    }
   }
   
   // MARK: - Complementary View
+  
   var backgroundImage: some View {
     Image("imageCharacterListView")
       .ImageStyle()
       .ignoresSafeArea()
   }
   
-  func characterRow(for character: Character) -> some View { // optimizar
+  func characterRow(for character: Character) -> some View {
     HStack(spacing: spacingHStack) {
       
-      AsyncImage(url: URL(string: character.image)) { image in // aislar la funcion de la carga de imagenes usar combine para manejar errores, si una imagen es error dejar una imagen por default
-        image.resizable()
-      } placeholder: {
-        ProgressView()
-      }
+      CustomAsyncImage(urlString: character.image)
       .frame(width: frameWidth, height: frameHeight)
       .cornerRadius(cornerRadius)
       
@@ -68,12 +67,20 @@ struct CharacterListView: View {
         Text(character.name)
           .rickTextStyle()
         
-        Text("\(character.species) • \(character.statusEmoji)")
           .font(.title3)
           .foregroundColor(.white)
       }
     }
     .listRowBackground(Color.black.opacity(listOpacity))
+  }
+  
+  var characterTextTitle: some View {
+    Text(CharacterViewTexts.mainTitle)
+      .font(.largeTitle)
+      .foregroundColor(.portalGreen)
+      .bold()
+      .padding(.horizontal, paddingHorizontal)
+      .padding(.top, paddingTop)
   }
   
 }
